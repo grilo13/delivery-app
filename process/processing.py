@@ -1,13 +1,9 @@
 import asyncio
 import os
 import logging
-import json
 
 from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
 from client.database import database
-
-from client.schemas import Order
-
 BOOTSTRAP_SERVERS = os.getenv('BOOTSTRAP_SERVERS', '0.0.0.0:29092')
 CONSUMER_TOPIC = os.getenv('CONSUMER_TOPIC', 'teste')
 DELIVERY_TOPIC = os.getenv('DELIVERY_TOPIC', 'delivery')
