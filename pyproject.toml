@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "delivery-app"
+version = "0.1.0"
+description = "Simple Delivery event driven application created with Fast API, MongoDB and Kafka"
+authors = ["grilo13"]
+readme = "README.md"
+packages = [{include = "delivery_app"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.89.1"
+asyncio = "^3.4.3"
+aiokafka = "^0.8.0"
+uvicorn = "^0.20.0"
+motor = "^3.1.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
