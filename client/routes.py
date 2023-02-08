@@ -8,7 +8,7 @@ from database import database
 from aiokafka import AIOKafkaProducer
 
 BOOTSTRAP_SERVERS = os.getenv('BOOTSTRAP_SERVERS', '0.0.0.0:29092')
-PRODUCER_TOPIC = os.getenv('PRODUCER_TOPIC', 'teste')
+PRODUCER_TOPIC = os.getenv('PRODUCER_TOPIC', 'request')
 
 router = APIRouter()
 
