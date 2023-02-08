@@ -1,9 +1,13 @@
 import asyncio
 import os
 import logging
+import time
+import random
 
 from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
 from client.database import database
+from datetime import datetime
+
 BOOTSTRAP_SERVERS = os.getenv('BOOTSTRAP_SERVERS', '0.0.0.0:29092')
 CONSUMER_TOPIC = os.getenv('CONSUMER_TOPIC', 'request')
 DELIVERY_TOPIC = os.getenv('DELIVERY_TOPIC', 'delivery')
@@ -26,11 +30,14 @@ async def consume():
             order = msg.value.decode('utf-8')
             order = eval(order)
             collection = database['order']
+            current_datetime = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
 
-            order.update({'status': 'processed'})
+            order.update({'status': 'processed',
+                          'update_date': current_datetime})
 
             try:
-                update_values = {"$set": {'status': "processed"}}
+                time.sleep(random.randint(0, 5))
+                update_values = {"$set": {'status': "processed", 'update_date': current_datetime}}
                 collection.update_one({'order_id': order["order_id"]}, update_values)
             except Exception as err:
                 print("DB is not available.. error {}".format(err.__str__()))

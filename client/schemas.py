@@ -8,3 +8,5 @@ class Order(BaseModel):
     quantity: int
     status: str
     order_id: Union[str, None] = None
+    request_date: Union[datetime, None] = None
+    update_date: Union[datetime, None] = None

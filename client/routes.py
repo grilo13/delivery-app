@@ -1,11 +1,14 @@
 import os
 import uuid
+import time
+import random
 
 from fastapi import APIRouter
 from schemas import Order
 from database import database
 
 from aiokafka import AIOKafkaProducer
+from datetime import datetime
 
 BOOTSTRAP_SERVERS = os.getenv('BOOTSTRAP_SERVERS', '0.0.0.0:29092')
 PRODUCER_TOPIC = os.getenv('PRODUCER_TOPIC', 'request')
@@ -19,11 +22,15 @@ async def receive_order(order: Order):
     print(order)
 
     collection = database['order']
+    current_datetime = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
     order_obj = order.dict()
-    order_obj.update({'order_id': str(uuid.uuid4().hex)})
+    order_obj.update({'order_id': str(uuid.uuid4().hex),
+                      'request_date': current_datetime,
+                      'update_date': current_datetime})
 
     print("Saving the order to the DB")
     try:
+        time.sleep(random.randint(0, 5))
         collection.insert_one(order_obj)
     except Exception as e:
         print("DB is not available.. error {}".format(e.__str__()))
